@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -15,6 +16,8 @@ class PostController extends Controller
     public function index()
     {
         //
+        $posts = post::latest('updated_at')->get();
+        return view('posts.index')->with('posts', $posts);
     }
 
     /**
@@ -24,7 +27,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        //goes to the post create page
+
+        return view('posts.create');
     }
 
     /**
@@ -35,7 +40,22 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validation
+        $request->validate([
+            'title' => 'required|max:120',
+            'text' => 'required',
+        ]);
+
+        //stores post in table
+        $post = new post;
+
+        $post->user_id = Auth::id();
+        $post->title = $request->title;
+        $post->text = $request->text;
+
+        $post->save();
+
+        return view('post.index'); //need to find a way to refresh the page?
     }
 
     /**
