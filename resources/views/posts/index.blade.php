@@ -10,7 +10,7 @@
             <x-primary-button><a href='{{ route('post.create') }}'>Post</a></x-primary-button>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
                 <div class="p-6 text-gray-900">
-                    @foreach ($posts as $post)
+                    @forelse ($posts as $post)
                     <div>
                         <!-- profile -->
                         <div>
@@ -23,8 +23,10 @@
                             <div class=' mt-1'>{{ $post->text }}</div>
                             <span class=' mt-2 text-gray-500'>{{ $post->updated_at->DiffForHumans(); }}</span>
                         </div>
-                    </div>              
-                    @endforeach
+                    </div>
+                    @empty
+                    <div>No Posts Yet</div>              
+                    @endforelse
                 </div>
             </div>
         </div>

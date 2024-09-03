@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PostController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //get posts
-        $posts = post::latest('updated_at')->get();
-        return view('posts.index')->with('posts', $posts);
+        //load user profile with user posts
+        $user_id = Auth::id();
+        $posts = post::where('user_id', $user_id)->latest('updated_at')->get();
+        $profile = User::where('id', $user_id)->select(['name', 'email', 'created_at'])->get();
+        return view('User.index')->with(['posts' => $posts, 'profile' => $profile]);
     }
 
     /**
@@ -27,9 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //goes to the post create page
-
-        return view('posts.create');
+        //
     }
 
     /**
@@ -40,25 +41,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //validation
-        $request->validate([
-            'title' => 'required|max:120',
-            'text' => 'required',
-        ]);
-
-        //stores post in table
-        $post = new post;
-
-        $post->user_id = Auth::id();
-        $post->title = $request->title;
-        $post->text = $request->text;
-
-        $post->save();
-        
-        //need to find a way to refresh the page?
-        return redirect()->back()->with('AlertMessage', 'Post Made Successfully');
-
-        
+        //dont use this one
     }
 
     /**
