@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -31,6 +32,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('post', PostController::class);
+
+Route::resource('comment', CommentController::class);
 
 Route::get('/User', [UserController::class, 'index'])->name('User.index');
 

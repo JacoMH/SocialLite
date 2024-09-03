@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\post;
+use App\Models\comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PostController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //get posts
-        $posts = post::latest('updated_at')->get();
-
-        //get profiles who made the posts
-        return view('posts.index')->with('posts', $posts);
+        //
     }
 
     /**
@@ -29,9 +26,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //goes to the post create page
-
-        return view('posts.create');
+        //
     }
 
     /**
@@ -44,44 +39,39 @@ class PostController extends Controller
     {
         //validation
         $request->validate([
-            'title' => 'required|max:120',
-            'text' => 'required',
+            'text'=>'required|max:500',
         ]);
 
-        //stores post in table
-        $post = new post;
+        //store in comments
+        $comment = new comment;
+        $comment->user_id = Auth::id();
+        $comment->post_id = $request->value;
+        $comment->CommentText = $request->text;
 
-        $post->user_id = Auth::id();
-        $post->title = $request->title;
-        $post->text = $request->text;
+        dd($comment);
 
-        $post->save();
-        
-        //returns with successful comment made
-        return redirect()->back()->with('AlertMessage', 'Post Made Successfully');
-
-        
+        $comment->save();
+        //maybe make it refresh to then show all the comments on the post
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\post  $post
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(post $post)
+    public function show($id)
     {
         //
-        return view('posts.comments', ['post' => $post]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\post  $post
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(post $post)
+    public function edit($id)
     {
         //
     }
@@ -90,10 +80,10 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\post  $post
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, post $post)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -101,10 +91,10 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\post  $post
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(post $post)
+    public function destroy($id)
     {
         //
     }

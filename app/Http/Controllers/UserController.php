@@ -19,7 +19,7 @@ class UserController extends Controller
         //load user profile with user posts
         $user_id = Auth::id();
         $posts = post::where('user_id', $user_id)->latest('updated_at')->get();
-        $profile = User::where('id', $user_id)->select(['name', 'email', 'created_at'])->get();
+        $profile = User::where('id', $user_id)->select(['name', 'email', 'created_at', 'ProfilePicture'])->get();
         return view('User.index')->with(['posts' => $posts, 'profile' => $profile]);
     }
 

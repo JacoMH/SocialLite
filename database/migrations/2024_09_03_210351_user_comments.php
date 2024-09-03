@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\post;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,11 +14,10 @@ return new class extends Migration
      */
     public function up()
     {
-        //
-        Schema::create('user_post', function (Blueprint $table) {
+        Schema::create('post_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->string('title');
+            $table->foreignId('post_id')->constrained('user_post', 'id');
             $table->string('text');
             $table->timestamps();
         });
