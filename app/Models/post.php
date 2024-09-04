@@ -10,4 +10,6 @@ class post extends Model
     use HasFactory;
 
     protected $table = 'user_post';
+    
+    protected $guarded = [];
 }

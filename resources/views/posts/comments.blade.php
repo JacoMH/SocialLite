@@ -23,14 +23,20 @@
                         </div>
 
                         <!-- comment box -->
-                        <form method='POST' class='flex flex-col' action="{{ route('comment.store')}}">
+                        <div>
+                            @if(session()->has('AlertMessage'))
+                            <!-- alert when comment is made -->
+                            <span class=' p-3 w-[80%] border-green-700 bg-green-500 rounded-md'>{{session()->get('AlertMessage')}}</span>
+                            @endif
+                        </div>
+                        <form method='POST' class='flex flex-col mt-1' action="{{ route('comment.store', $post)}}"> <!-- not passing post attributes to the controller -->
                             @csrf
                             <x-text-area name='CommentText'></x-text-area>
-                            <input type='hidden' name='value' value={{ $post->id }}></input> <!-- may have to change this as am not sure if its a security issue -->
+                      
                             @error('CommentText')
                             <div class='bg-red-500 text-xs'> {{ $message }}</div>
                             @enderror
-                            <x-primary-button class=' max-w-[50px] w-full'>Comment</x-primary-button>
+                            <x-primary-button class=' max-w-[100px] w-full mt-1 self-end'>Comment</x-primary-button>
                         </form>
                     </div>
                 </div>

@@ -35,23 +35,25 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, post $post)
     {
         //validation
-        $request->validate([
-            'text'=>'required|max:500',
+        dd($post);
+        $data = $request->validate([
+            'CommentText'=>'required|max:500',
         ]);
 
         //store in comments
-        $comment = new comment;
+        $comment = new Comment;
         $comment->user_id = Auth::id();
-        $comment->post_id = $request->value;
-        $comment->CommentText = $request->text;
+        $comment->post_id = $post->id;
+        $comment->text = $request->CommentText;
 
-        dd($comment);
 
         $comment->save();
+
         //maybe make it refresh to then show all the comments on the post
+        return redirect()->back()->with('AlertMessage', 'Comment Made Successfully');
     }
 
     /**

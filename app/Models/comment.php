@@ -10,4 +10,6 @@ class comment extends Model
     use HasFactory;
 
     protected $table = 'post_comments';
+
+    protected $guarded = [];
 }
