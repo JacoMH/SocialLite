@@ -19,7 +19,7 @@ class PostController extends Controller
         $posts = post::latest('updated_at')->get();
 
         //get profiles who made the posts
-        return view('posts.index')->with('posts', $posts);
+        return view('posts.index')->with(['posts', $posts]);
     }
 
     /**
