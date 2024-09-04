@@ -44,7 +44,11 @@
 
             <!-- already made comments -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
-                already made comments go here
+                @forelse($comments as $comment)
+                <div> {{ $comment->text}} </div>
+                @empty
+                <div>No comments yet</div>
+                @endforelse
             </div>
         </div>
     </div>

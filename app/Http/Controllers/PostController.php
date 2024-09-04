@@ -71,8 +71,9 @@ class PostController extends Controller
      */
     public function show(post $post)
     {
-        //
-        return view('posts.comments', ['post' => $post]);
+        //maybe fetch comments here and send them with the post to the comments section
+        $comments = post::find($post->id)->comments()->latest('updated_at')->get();
+        return view('posts.comments', ['post' => $post], ['comments' => $comments]);
     }
 
     /**

@@ -12,4 +12,12 @@ class post extends Model
     protected $table = 'user_post';
     
     protected $guarded = [];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(comment::class);
+    }
 }

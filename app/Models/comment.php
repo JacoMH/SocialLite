@@ -12,4 +12,8 @@ class comment extends Model
     protected $table = 'post_comments';
 
     protected $guarded = [];
+
+    public function post() {
+        return $this->belongsTo(post::class);
+    }
 }
