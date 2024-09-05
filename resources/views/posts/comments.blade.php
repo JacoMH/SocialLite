@@ -12,7 +12,7 @@
                     <div>
                         <!-- profile -->
                         <div>
-                            
+                            <div class='text-3xl text-blue-600'>{{ $user->name }}</div>  
                         </div>
 
                         <!-- content -->

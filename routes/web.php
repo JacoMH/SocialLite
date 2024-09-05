@@ -31,7 +31,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('post', PostController::class);
+Route::resource('post', PostController::class)->except([
+    'show'
+]);
+
+Route::get('/posts/{post}/comments/{user}', [PostController::class, 'show'])->name('post.show'); //somewhat sorted the issue, but may need to redo a large portion of the program to make it cohesive
 
 Route::resource('comment', CommentController::class);
 

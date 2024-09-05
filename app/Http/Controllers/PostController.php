@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,11 +70,12 @@ class PostController extends Controller
      * @param  \App\Models\post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(post $post)
+    public function show(post $post, user $user)
     {
+        dd($user);
         //maybe fetch comments here and send them with the post to the comments section
         $comments = post::find($post->id)->comments()->latest('updated_at')->get();
-        return view('posts.comments', ['post' => $post], ['comments' => $comments]);
+        return view('posts.comments', ['post' => $post], ['comments' => $comments], ['user' => $user]);
     }
 
     /**
