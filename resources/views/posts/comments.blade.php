@@ -4,17 +4,17 @@
             {{ __('Comments') }}
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
                 <div class="p-6 text-gray-900">
                     <div>
                         <!-- profile -->
-                        <div>
-                            <div class='text-3xl text-blue-600'>{{ $user->name }}</div>  
+                        <div> 
+                            <img  class=' max-w-[200px] w-full rounded-full self-center'src='{{ $user->ProfilePicture }}'></img>
+                            <div class=' text-gray-600 text-2xl'>{{ $user->name }}</div>
                         </div>
-
+                        
                         <!-- content -->
                         <div>
                             <div class='text-3xl text-blue-600'>{{ $post->title }}</div>
@@ -29,7 +29,7 @@
                             <span class=' p-3 w-[80%] border-green-700 bg-green-500 rounded-md'>{{session()->get('AlertMessage')}}</span>
                             @endif
                         </div>
-                        <form method='POST' class='flex flex-col mt-1' action="{{ route('comment.store', $post)}}"> <!-- not passing post attributes to the controller -->
+                        <form method='POST' class='flex flex-col mt-1' action="{{ route('comment.store', [$post, $user])}}"> <!-- not passing post attributes to the controller -->
                             @csrf
                             <x-text-area name='CommentText'></x-text-area>
                       
@@ -45,6 +45,7 @@
             <!-- already made comments -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
                 @forelse($comments as $comment)
+                <div> {{$commentProfile->name}}</div>
                 <div> {{ $comment->text}} </div>
                 @empty
                 <div>No comments yet</div>

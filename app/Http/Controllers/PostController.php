@@ -70,12 +70,18 @@ class PostController extends Controller
      * @param  \App\Models\post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(post $post, user $user)
+    public function show(post $post)
     {
-        dd($user);
+        //fetch post profile
+        $user = User::find($post->user_id)->select(['name', 'email', 'created_at', 'ProfilePicture'])->first();
         //maybe fetch comments here and send them with the post to the comments section
         $comments = post::find($post->id)->comments()->latest('updated_at')->get();
-        return view('posts.comments', ['post' => $post], ['comments' => $comments], ['user' => $user]);
+
+        $commentProfile = [];
+        foreach ($comments as $comment) {
+            $commentProfile = user::find($comment->user_id)->get();
+        }
+        return view('posts.comments', ['post' => $post, 'comments' => $comments, 'commentProfile' => $commentProfile, 'user' => $user]);
     }
 
     /**
