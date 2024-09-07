@@ -44,8 +44,11 @@
 
             <!-- already made comments -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
+                @foreach($commentProfiles as $profile)
+                    <div>{{ $profile->name}}</div>
+                    <img src='{{ $profile->ProfilePicture}}'></img>  <!-- have to figure out another way to display them -->
+                @endforeach
                 @forelse($comments as $comment)
-                <div> {{$commentProfile->name}}</div>
                 <div> {{ $comment->text}} </div>
                 @empty
                 <div>No comments yet</div>

@@ -72,16 +72,17 @@ class PostController extends Controller
      */
     public function show(post $post)
     {
+        $commentProfiles = [];
         //fetch post profile
         $user = User::find($post->user_id)->select(['name', 'email', 'created_at', 'ProfilePicture'])->first();
         //maybe fetch comments here and send them with the post to the comments section
         $comments = post::find($post->id)->comments()->latest('updated_at')->get();
-
-        $commentProfile = [];
         foreach ($comments as $comment) {
-            $commentProfile = user::find($comment->user_id)->get();
+            $commentProfiles = user::find($comment->user_id)->get();
         }
-        return view('posts.comments', ['post' => $post, 'comments' => $comments, 'commentProfile' => $commentProfile, 'user' => $user]);
+
+
+        return view('posts.comments', ['post' => $post, 'comments' => $comments, 'user' => $user, 'commentProfiles' => $commentProfiles]);
     }
 
     /**
