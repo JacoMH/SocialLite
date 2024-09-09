@@ -20,4 +20,6 @@ class post extends Model
     public function comments() {
         return $this->hasMany(comment::class);
     }
+
+    protected $dates = ['updated_at'];
 }

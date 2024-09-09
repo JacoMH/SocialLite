@@ -35,10 +35,9 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, post $post)
+    public function store(Request $request)
     {
         //validation
-        dd($post);
         $data = $request->validate([
             'CommentText'=>'required|max:500',
         ]);
@@ -46,7 +45,7 @@ class CommentController extends Controller
         //store in comments
         $comment = new Comment;
         $comment->user_id = Auth::id();
-        $comment->post_id = $post->id;
+        $comment->post_id = $request->postID;
         $comment->text = $request->CommentText;
 
 

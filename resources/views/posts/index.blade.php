@@ -10,20 +10,21 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
                 <div class="p-6 text-gray-900">
                     @forelse ($posts as $post)
-                    <div>
-                        <!-- profile -->
-                        <div>
-                            
-                        </div>
-
-                        <!-- content -->
-                        <div>
-                            <div class='text-3xl text-blue-600'>{{ $post->title }}</div>
-                            <div class=' mt-1'>{{ $post->text }}</div>
-                            <div class=' mt-1 text-blue-400 hover:underline'><a href='{{ route('post.show', $post) }}'>Comments</a></div>
-                            <span class=' mt-2 text-gray-500'>{{ $post->updated_at->DiffForHumans(); }}</span>
-                        </div>
-                    </div>
+                        <section class='flex'>
+                            <!-- profile -->
+                            <div name='Profile' class=' pr-4 mt-2'>
+                                <img class=' rounded-full max-w-[100px]'src='{{$post->ProfilePicture}}'></img>
+                                <div class='text-center'>{{ $post->name}}</div>
+                            </div>
+        
+                            <!-- comment -->
+                            <div name='comment' class='self-center'>
+                                <div class='text-3xl text-blue-600'>{{ $post->title}}</div>
+                                <div class='mt-1'>{{ $post->text}}</div>
+                                <div class=' mt-1 text-blue-400 hover:underline'><a href='{{ route('post.show', $post->id) }}'>Comments</a></div>
+                                <span class=' mt-2 text-gray-500'>{{ $post->updated_at->DiffForHumans(); }}</span>
+                            </div>
+                        </section>
                     @empty
                     <div>No Posts Yet</div>              
                     @endforelse

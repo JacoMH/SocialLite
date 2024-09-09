@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\post;
 use App\Models\User;
 use App\Models\comment;
@@ -19,10 +20,17 @@ class PostController extends Controller
     public function index()
     {
         //get posts
-        $posts = post::latest('updated_at')->get();
-
+        $posts = DB::table('user_post')
+        ->join('users', 'user_post.user_id', '=', 'users.id')
+        ->select('user_post.*', 'users.ProfilePicture', 'users.name')
+        ->get()
+        ->map(function ($post){
+            $post->updated_at = Carbon::parse($post->updated_at); //changes the string created by the STDclass to a carbon instance
+            $post->created_at = Carbon::parse($post->created_at);
+            return $post;
+        });
         //get profiles who made the posts
-        return view('posts.index')->with(['posts', $posts]);
+        return view('posts.index', ['posts' => $posts]);
     }
 
     /**
@@ -45,6 +53,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         //validation
         $request->validate([
             'title' => 'required|max:120',
@@ -73,19 +82,34 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(post $post)
-    {
-        //fetch post profile
-        $user = User::find($post->user_id)->select(['name', 'email', 'created_at', 'ProfilePicture'])->first();
-        
-        
+    {       
         //fetch comments here and send them with the post to the comments section
         $PostComment = DB::table('post_comments')
         ->join('users', 'post_comments.user_id', '=', 'users.id')
         ->select('post_comments.*', 'users.ProfilePicture', 'users.name')
         ->where('post_comments.post_id', '=', $post->id)
-        ->get();
+        ->latest() 
+        ->get()
+        ->map(function ($comment){
+            $comment->updated_at = Carbon::parse($comment->updated_at);
+            $comment->created_at = Carbon::parse($comment->created_at);
+            return $comment;
+        });
 
-        return view('posts.comments', ['post' => $post, 'PostComment' => $PostComment, 'user' => $user]);
+        //fetch post and user
+        $UserPost = DB::table('user_post')
+        ->join('users', 'user_post.user_id', '=', 'users.id')
+        ->select('user_post.*', 'users.name', 'users.ProfilePicture', 'users.created_at')
+        ->where('user_post.id', '=', $post->id)
+        ->first();
+        
+        //changes from string to carbon instance
+        if ($UserPost) {
+            $UserPost->created_at = Carbon::parse($UserPost->created_at);
+            $UserPost->updated_at = Carbon::parse($UserPost->updated_at);
+            }
+
+        return view('posts.comments', ['UserPost' => $UserPost, 'PostComment' => $PostComment]);
     }
 
     /**

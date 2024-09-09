@@ -11,15 +11,15 @@
                     <div>
                         <!-- profile -->
                         <div> 
-                            <img  class=' max-w-[200px] w-full rounded-full self-center'src='{{ $user->ProfilePicture }}'></img>
-                            <div class=' text-gray-600 text-2xl'>{{ $user->name }}</div>
+                            <img  class=' max-w-[200px] w-full rounded-full self-center'src='{{ $UserPost->ProfilePicture }}'></img>
+                            <div class=' text-gray-600 text-2xl'>{{ $UserPost->name }}</div>
                         </div>
                         
                         <!-- content -->
                         <div>
-                            <div class='text-3xl text-blue-600'>{{ $post->title }}</div>
-                            <div class=' mt-1'>{{ $post->text }}</div>
-                            <span class=' mt-2 text-gray-500'>{{ $post->updated_at->DiffForHumans(); }}</span>
+                            <div class='text-3xl text-blue-600'>{{ $UserPost->title }}</div>
+                            <div class=' mt-1'>{{ $UserPost->text }}</div>
+                            <span class=' mt-2 text-gray-500'>{{ $UserPost->updated_at->DiffForHumans(); }}</span>
                         </div>
 
                         <!-- comment box -->
@@ -29,10 +29,10 @@
                             <span class=' p-3 w-[80%] border-green-700 bg-green-500 rounded-md'>{{session()->get('AlertMessage')}}</span>
                             @endif
                         </div>
-                        <form method='POST' class='flex flex-col mt-1' action="{{ route('comment.store', [$post, $user])}}"> <!-- not passing post attributes to the controller -->
+                        <form method='POST' class='flex flex-col mt-1' action="{{ route('comment.store')}}"> <!-- not passing post attributes to the controller -->
                             @csrf
                             <x-text-area name='CommentText'></x-text-area>
-                      
+                            <input type='hidden' name='postID' value='{{ $UserPost->id }}'></input> <!-- not sure if it is a security risk -->
                             @error('CommentText')
                             <div class='bg-red-500 text-xs'> {{ $message }}</div>
                             @enderror
@@ -43,20 +43,21 @@
             </div>
 
             <!-- already made comments -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2 p-2 flex flex-col">
                 @forelse ($PostComment as $comment)
 
-                <!-- profile -->
-                <div name='Profile'>
-                    <div>{{ $comment->ProfilePicture}}</div>
-                    <div>{{ $comment->name}}</div>
-                </div>
+                <section class='flex'>
+                    <!-- profile -->
+                    <div name='Profile' class=' pr-4 mt-2'>
+                        <img class=' rounded-full max-w-[100px]'src='{{$comment->ProfilePicture}}'></img>
+                        <div class='text-center'>{{ $comment->name}}</div>
+                    </div>
 
-                <!-- comment -->
-                <div name='comment'>
-                    <div>{{ $comment->text}}</div>
-                </div>
-
+                    <!-- comment -->
+                    <div name='comment' class='self-center'>
+                        <div>{{ $comment->text}}</div>
+                    </div>
+                </section>
                 @empty
                 <div>No comments yet</div>
                 @endforelse
