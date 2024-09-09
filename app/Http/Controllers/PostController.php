@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\post;
 use App\Models\User;
+use App\Models\comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -72,17 +74,18 @@ class PostController extends Controller
      */
     public function show(post $post)
     {
-        $commentProfiles = [];
         //fetch post profile
         $user = User::find($post->user_id)->select(['name', 'email', 'created_at', 'ProfilePicture'])->first();
-        //maybe fetch comments here and send them with the post to the comments section
-        $comments = post::find($post->id)->comments()->latest('updated_at')->get();
-        foreach ($comments as $comment) {
-            $commentProfiles = user::find($comment->user_id)->get();
-        }
+        
+        
+        //fetch comments here and send them with the post to the comments section
+        $PostComment = DB::table('post_comments')
+        ->join('users', 'post_comments.user_id', '=', 'users.id')
+        ->select('post_comments.*', 'users.ProfilePicture', 'users.name')
+        ->where('post_comments.post_id', '=', $post->id)
+        ->get();
 
-
-        return view('posts.comments', ['post' => $post, 'comments' => $comments, 'user' => $user, 'commentProfiles' => $commentProfiles]);
+        return view('posts.comments', ['post' => $post, 'PostComment' => $PostComment, 'user' => $user]);
     }
 
     /**
