@@ -33,8 +33,6 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('post', PostController::class)->middleware(['auth', 'verified']);
 
-//Route::get('/posts/{post}/comments/{user}', [PostController::class, 'show'])->name('post.show'); //somewhat sorted the issue, but may need to redo a large portion of the program to make it cohesive
-
 Route::resource('comment', CommentController::class);
 
 Route::get('/User', [UserController::class, 'index'])->name('User.index');
