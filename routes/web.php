@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -33,7 +34,9 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('post', PostController::class)->middleware(['auth', 'verified']);
 
-Route::resource('comment', CommentController::class);
+Route::resource('comment', CommentController::class)->middleware(['auth', 'verified']);
+
+Route::resource('like', LikeController::class)->middleware(['auth', 'verified']);
 
 Route::get('/User', [UserController::class, 'index'])->name('User.index');
 

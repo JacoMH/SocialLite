@@ -32,6 +32,11 @@
                             <div class=' text-2xl text-blue-600'>{{ $post->title }}</div>
                             <div>{{ $post->text }}</div>    
                             <div class=' mt-1 text-blue-400 hover:underline'><a href='{{ route('post.show', $post) }}'>Comments</a></div>
+                            <form method='POST' action='{{ route('like.store', $post)}}'>
+                                @csrf
+                                <input type='hidden' name='postID' value='{{ $post->id }}'></input>
+                                <x-primary-button class=' max-w-[100px] w-full mt-1 self-end'>Like</x-primary-button>
+                            </form>
                         </div>
                     </div>
                     @empty 
