@@ -36,30 +36,29 @@ class LikeController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         echo("hello");
         // like/unlike comment
         $request->validate([
-            'post_id' => 'required',
+            'postID' => 'required',
         ]);
 
 
 
-        $like = like::where('user_id', Auth::id())->where('post_id', $request->post_id)->first();
+        $like = like::where('user_id', Auth::id())->where('post_id', $request->postID)->first();
 
         if($like) {
             //delete like from database
-            like::where('user_id', Auth::id())->where('post_id', $request->post_id)->delete();
-            return redirect()->back()->with('AlertMessage', 'Post UnLiked');
+            like::where('user_id', Auth::id())->where('post_id', $request->postID)->delete();
+            return response()->json([]);
         }
         else{
             //if doesn't exist then store and save like
             $like = new like;
             $like->user_id = Auth::id();
-            $like->post_id = $request->post_id;
+            $like->post_id = $request->postID;
 
             $like->save();
-            return redirect()->back()->with('AlertMessage', 'Post Liked');
+            return response()->json([]);
         }
     }
 
