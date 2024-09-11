@@ -1,7 +1,8 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <div id='message'></div>
             <!-- Profile info here -->
             @foreach($profile as $user)
             <section name='profile' class=' flex self-center flex-col text-center'>
@@ -33,12 +34,9 @@
                             <div class=' text-2xl text-blue-600'>{{ $post->title }}</div>
                             <div>{{ $post->text }}</div>    
                             <div class=' mt-1 text-blue-400 hover:underline'><a href='{{ route('post.show', $post) }}'>Comments</a></div>
-                            
-                            <form method='POST' action='{{url('ajaxupload')}}' id='addlike'>
-                                @csrf
+
                                 <input type='hidden' name='postID' value='{{ $post->id }}'></input>
-                                <x-primary-button class=' max-w-[100px] w-full mt-1 self-end'>Like</x-primary-button>
-                            </form>
+                                <a class=' max-w-[100px] w-full mt-1 self-end' id='submit' href='#'>Like</a>
                         </div>
                     </div>
                     @empty 
@@ -51,30 +49,3 @@
     </div>
 </x-app-layout>
 
-<script type='text/javascript'>
-    $(document).ready(function()
-    {
-
-        $('#addlike').on('submit', function(event)
-        {
-            event.preventDefault(); //prevents refresh
-            jQuery.ajax({
-                alert('hello'); 
-                url:"{{url('ajaxupload')}}",
-                data:jQuery('#addlike').serialize(),
-                type:post,
-
-                success:function(result)
-                {
-                    alert('complete');
-                    $('#message').css('display','block');
-
-                    jQuery('#message').html(result.message);
-
-                }
-
-            });
-        });
-
-    });
-</script>
