@@ -9,18 +9,20 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
                 <div class="p-6 text-gray-900">
                     <div>
-                        <!-- profile -->
-                        <div> 
-                            <img  class=' max-w-[200px] w-full rounded-full self-center'src='{{ $UserPost->ProfilePicture }}'></img>
-                            <div class=' text-gray-600 text-2xl'>{{ $UserPost->name }}</div>
-                        </div>
-                        
-                        <!-- content -->
-                        <div>
-                            <div class='text-3xl text-blue-600'>{{ $UserPost->title }}</div>
-                            <div class=' mt-1'>{{ $UserPost->text }}</div>
-                            <span class=' mt-2 text-gray-500'>{{ $UserPost->updated_at->DiffForHumans(); }}</span>
-                        </div>
+                        <section class='flex'>
+                            <!-- profile -->
+                            <div name='Profile' class=' pr-4 mt-2'>
+                                <img class=' rounded-full max-w-[100px]'src='{{$UserPost->ProfilePicture}}'></img>
+                                <div class='text-center'>{{ $UserPost->name}}</div>
+                            </div>
+        
+                            <!-- post -->
+                            <div name='comment' class='self-center'>
+                                <div class='text-3xl text-blue-600'>{{ $UserPost->title}}</div>
+                                <div class='mt-1'>{{ $UserPost->text}}</div>
+                                <span class=' mt-2 text-gray-500'>{{ $UserPost->updated_at->DiffForHumans(); }}</span>
+                            </div>
+                        </section>
 
                         <!-- comment box -->
                         <div>
@@ -43,26 +45,25 @@
             </div>
 
             <!-- already made comments -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2 p-2 flex flex-col">
                 @forelse ($PostComment as $comment)
-
-                <section class='flex'>
-                    <!-- profile -->
-                    <div name='Profile' class=' pr-4 mt-2'>
-                        <img class=' rounded-full max-w-[100px]'src='{{$comment->ProfilePicture}}'></img>
-                        <div class='text-center'>{{ $comment->name}}</div>
-                    </div>
-
-                    <!-- comment -->
-                    <div name='comment' class='self-center'>
-                        <div>{{ $comment->text}}</div>
-                    </div>
-                </section>
-                @empty
-                <div>No comments yet</div>
-                @endforelse
-                
-            </div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2 p-2 flex flex-col">
+                    <section class='flex'>
+                        <!-- profile -->
+                        <div name='Profile' class=' pr-4 mt-2'>
+                            <img class=' rounded-full max-w-[100px]'src='{{$comment->ProfilePicture}}'></img>
+                            <div class='text-center'>{{ $comment->name}}</div>
+                        </div>
+    
+                        <!-- comment -->
+                        <div name='comment' class='self-center'>
+                            <div>{{ $comment->text}}</div>
+                            <span class=' mt-2 text-gray-500'>{{ $comment->updated_at->DiffForHumans(); }}</span>
+                        </div>
+                    </section>
+                </div>   
+                    @empty
+                    <div>No comments yet</div>
+                    @endforelse 
         </div>
     </div>
 </x-app-layout>

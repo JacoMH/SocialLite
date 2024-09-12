@@ -28,9 +28,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::resource('post', PostController::class)->middleware(['auth', 'verified']);
@@ -41,7 +41,7 @@ Route::resource('like', LikeController::class)->middleware(['auth', 'verified'])
 
 Route::get('/User', [UserController::class, 'index'])->name('User.index');
 
-Route::post('ajaxupload',[LikeDislikeController::class, 'upload'])->name('like.upload');
+Route::post('like/{postID}/upload',[LikeDislikeController::class, 'upload'])->name('like.upload');
 
 
 require __DIR__.'/auth.php';

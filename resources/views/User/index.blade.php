@@ -25,51 +25,29 @@
             <section class='flex flex-col'>
                 <div class="p-6 text-gray-900">
                     @forelse ($posts as $post)
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
-                        <div name='profileSection' class='mr-12'>
-                            <img  class=' max-w-[100px] w-full rounded-full self-center'src='{{ $user->ProfilePicture }}'></img>
-                            <div class=' text-gray-600 text-center'>{{ $user->name }}</div> 
-                            <div class=' text-xs text-gray-600 text-end p-4'>{{ $post->updated_at->DiffForHumans(); }}</div>
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2 p-6">
+                        <section class='flex'>
+                            <!-- profile -->
+                            <div name='Profile' class=' pr-4 mt-2'>
+                                <img class=' rounded-full max-w-[100px]'src='{{$user->ProfilePicture}}'></img>
+                                <div class='text-center'>{{ $user->name}}</div>
+                            </div>
+        
+                            <!-- post -->
+                            <div name='comment' class='self-center'>
+                                <div class='text-3xl text-blue-600'>{{ $post->title}}</div>
+                                <div class='mt-1'>{{ $post->text}}</div>
+                                <div class=' mt-1 text-blue-400 hover:underline'><a href='{{ route('post.show', $post->id) }}'>Comments</a></div>
+                                <span class=' mt-2 text-gray-500'>{{ $post->updated_at->DiffForHumans(); }}</span>
+                            </div>
+                        </section>
                         </div>
-                        <div name='postSection'>
-                            <div class=' text-2xl text-blue-600'>{{ $post->title }}</div>
-                            <div>{{ $post->text }}</div>    
-                            <div class=' mt-1 text-blue-400 hover:underline'><a href='{{ route('post.show', $post) }}'>Comments</a></div>
-
-                                <input type='hidden' name='postID' value='{{ $post->id }}'></input>
-                                <form method='POST' action="{{url('ajaxupload')}}" id='likepost'>
-                                @csrf
-                                    <input type='hidden' value='{{$post->id}}' name='postID'>
-                                    <input type='submit' class=' max-w-[100px] w-full mt-1 self-end' id='likebutton'>
-                                </form>
-                                <div id='message'></div>
-                        </div>
-                    </div>
-                    @empty 
-                    <div>No Posts Yet</div>
-                </div>
+                    @empty
+                    <div>No Posts Yet</div>              
                     @endforelse
                 </div>
             </section>
         </div>
     </div>
 </x-app-layout>
-
-<script type='text/javascript'>
-    $(document).ready(function() {
-        $("#likepost").on('submit',function(event){
-        event.preventDefault();
-        jQuery.ajax({
-                    type:'POST',
-                    url:"{{url('ajaxupload')}}",
-                    data:jQuery('#likepost').serialize(),
-                    type:post,
-                    success:function(result) {
-                        $('#message').css('display','block');
-                        jQuery('#message').html(result.message);
-                    }
-                    });
-    })
-});
-</script>
 

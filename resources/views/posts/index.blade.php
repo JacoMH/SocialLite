@@ -17,7 +17,7 @@
                                 <div class='text-center'>{{ $post->name}}</div>
                             </div>
         
-                            <!-- comment -->
+                            <!-- post -->
                             <div name='comment' class='self-center'>
                                 <div class='text-3xl text-blue-600'>{{ $post->title}}</div>
                                 <div class='mt-1'>{{ $post->text}}</div>
