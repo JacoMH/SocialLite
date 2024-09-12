@@ -41,7 +41,7 @@ Route::resource('like', LikeController::class)->middleware(['auth', 'verified'])
 
 Route::get('/User', [UserController::class, 'index'])->name('User.index');
 
-Route::post('/ajaxupload',[LikeDislikeController::class, 'upload'])->name('like.store');
+Route::post('ajaxupload',[LikeDislikeController::class, 'upload'])->name('like.upload');
 
 
 require __DIR__.'/auth.php';

@@ -21,5 +21,9 @@ class post extends Model
         return $this->hasMany(comment::class);
     }
 
+    public function likes() {
+        return $this->hasMany(Like::class, 'post_id')->sum('id');
+    }
+
     protected $dates = ['updated_at'];
 }

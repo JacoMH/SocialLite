@@ -1,4 +1,5 @@
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -36,7 +37,12 @@
                             <div class=' mt-1 text-blue-400 hover:underline'><a href='{{ route('post.show', $post) }}'>Comments</a></div>
 
                                 <input type='hidden' name='postID' value='{{ $post->id }}'></input>
-                                <a class=' max-w-[100px] w-full mt-1 self-end' id='submit' href='#'>Like</a>
+                                <form method='POST' action="{{url('ajaxupload')}}" id='likepost'>
+                                @csrf
+                                    <input type='hidden' value='{{$post->id}}' name='postID'>
+                                    <input type='submit' class=' max-w-[100px] w-full mt-1 self-end' id='likebutton'>
+                                </form>
+                                <div id='message'></div>
                         </div>
                     </div>
                     @empty 
@@ -48,4 +54,22 @@
         </div>
     </div>
 </x-app-layout>
+
+<script type='text/javascript'>
+    $(document).ready(function() {
+        $("#likepost").on('submit',function(event){
+        event.preventDefault();
+        jQuery.ajax({
+                    type:'POST',
+                    url:"{{url('ajaxupload')}}",
+                    data:jQuery('#likepost').serialize(),
+                    type:post,
+                    success:function(result) {
+                        $('#message').css('display','block');
+                        jQuery('#message').html(result.message);
+                    }
+                    });
+    })
+});
+</script>
 

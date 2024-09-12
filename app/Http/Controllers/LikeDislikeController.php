@@ -10,6 +10,8 @@ class LikeDislikeController extends Controller
 {
     public function upload(Request $request)
     {
+
+        echo('hello');
         $request->validate([
             'postID' => 'required',
         ]);
