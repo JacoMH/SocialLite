@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -14,14 +16,35 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function __invoke($id)
     {
-        //load user profile with user posts
-        $user_id = Auth::id();
-        $posts = Auth::User()->posts()->latest('updated_at')->get();
-        $profile = User::where('id', $user_id)->select(['name', 'email', 'created_at', 'ProfilePicture'])->get();
-        //users who made posts
-        return view('User.index')->with(['posts' => $posts, 'profile' => $profile]);
+        if (Auth::id() != $id) {
+            $UserPost = DB::table('user_post')
+            ->join('users', 'user_post.user_id', '=', 'users.id')
+            ->select('user_post.*', 'users.name', 'users.ProfilePicture', 'users.created_at', 'users.email')
+            ->where('user_post.id', '=', $id)
+            ->get()
+            ->map(function ($post){
+                $post->updated_at = Carbon::parse($post->updated_at); //changes the string created by the STDclass to a carbon instance
+                $post->created_at = Carbon::parse($post->created_at);
+                return $post;
+            });
+            return view('User.index', ['UserPost' => $UserPost]);
+        } 
+        else {
+            //load your user profile with your posts
+            $UserPost = DB::table('user_post')
+            ->join('users', 'user_post.user_id', '=', 'users.id')
+            ->select('user_post.*', 'users.name', 'users.ProfilePicture', 'users.created_at', 'users.email')
+            ->where('user_post.id', '=', $id)
+            ->get()
+            ->map(function ($post){
+                $post->updated_at = Carbon::parse($post->updated_at); //changes the string created by the STDclass to a carbon instance
+                $post->created_at = Carbon::parse($post->created_at);
+                return $post;
+            });
+            return view('User.index', ['UserPost' => $UserPost]);
+        }
     }
 
     /**

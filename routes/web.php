@@ -43,5 +43,7 @@ Route::get('/User', [UserController::class, 'index'])->name('User.index');
 
 Route::post('like/{postID}/upload',[LikeDislikeController::class, 'upload'])->name('like.upload');
 
+Route::get('/User/{id}', UserController::class, 'index')->name('User.index');
+
 
 require __DIR__.'/auth.php';

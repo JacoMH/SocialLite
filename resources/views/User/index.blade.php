@@ -5,7 +5,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             <div id='message'></div>
             <!-- Profile info here -->
-            @foreach($profile as $user)
+            @foreach($UserPost as $user)
             <section name='profile' class=' flex self-center flex-col text-center'>
             <?php $name = $user->name;  ?>
             <img  class=' max-w-[200px] w-full rounded-full self-center'src='{{ $user->ProfilePicture }}'></img>
@@ -24,13 +24,14 @@
             <x-primary-button><a href='{{ route('post.create') }}'>Post</a></x-primary-button> <!-- sort out the layout -->
             <section class='flex flex-col'>
                 <div class="p-6 text-gray-900">
-                    @forelse ($posts as $post)
+                    {{dd($UserPost)}}
+                    @forelse ($UserPost as $post)
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2 p-6">
                         <section class='flex'>
                             <!-- profile -->
                             <div name='Profile' class=' pr-4 mt-2'>
-                                <img class=' rounded-full max-w-[100px]'src='{{$user->ProfilePicture}}'></img>
-                                <div class='text-center'>{{ $user->name}}</div>
+                               <a href='{{ route('User.index', $post->id) }}'><img class=' rounded-full max-w-[100px]'src='{{$post->ProfilePicture}}'></img></a>
+                                <div class='text-center'>{{ $post->name}}</div>
                             </div>
         
                             <!-- post -->
