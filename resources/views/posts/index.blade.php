@@ -13,7 +13,7 @@
                         <section class='flex'>
                             <!-- profile -->
                             <div name='Profile' class=' pr-4 mt-2'>
-                                <img class=' rounded-full max-w-[100px]'src='{{$post->ProfilePicture}}'></img>
+                                <a href='{{ route('User.index', $post->user_id)}}'><img class=' rounded-full max-w-[100px]'src='{{$post->ProfilePicture}}'></img></a>
                                 <div class='text-center'>{{ $post->name}}</div>
                             </div>
         

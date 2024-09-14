@@ -44,13 +44,13 @@
                 </div>
             </div>
 
-            <!-- already made comments -->
+            <!-- already made comments -->             
                 @forelse ($PostComment as $comment)
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2 p-2 flex flex-col">
                     <section class='flex'>
                         <!-- profile -->
                         <div name='Profile' class=' pr-4 mt-2'>
-                            <img class=' rounded-full max-w-[100px]'src='{{$comment->ProfilePicture}}'></img>
+                            <a href='{{ route('User.index', $comment->user_id)}}'><img class=' rounded-full max-w-[100px]'src='{{$comment->ProfilePicture}}'></img></a>
                             <div class='text-center'>{{ $comment->name}}</div>
                         </div>
     
