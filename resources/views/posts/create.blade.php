@@ -1,7 +1,8 @@
+<script type='text/javascript' src='{{ asset('resources\js\test.js')}}' defer></script>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Home') }}
+            {{ __('Create') }}
         </h2>
     </x-slot>
 
@@ -17,20 +18,27 @@
                     @endif
                 </div>
                 <div class="p-6 text-gray-900">
-                 <form method='POST' action="{{ route('post.store')}} ">
+                 <form method='POST' action="{{ route('post.store')}} " class=' flex flex-col items-center' enctype='multipart/form-data'>
                  @csrf
-                 <x-text-input name='title' placeholder='Title here' value="{{ @old('title')}}"></x-text-input>
+                 <x-text-input name='title' placeholder='Title here' value="{{ @old('title')}}" class='mt-2 min-w-[600px]'></x-text-input>
                  @error('title')
                  <div class=' text-red-500 text-xs'>{{ $message }}</div>
                  @enderror
-                 <x-text-input name='text' placeholder='Text here' value="{{ @old('title')}}"></x-text-input>
+                 <x-text-input name='text' placeholder='Text here' value="{{ @old('title')}}" class='mt-2 min-w-[600px]'></x-text-input>
                  @error('text')
                  <div class='text-red-500 text-xs'>{{ $message }}</div>
                  @enderror
-                 <x-primary-button>Create Post</x-primary-button>
+                 <!-- insert image -->
+                 <input type='file' id='image' multiple></input>
+                 <div>
+                    <span></span>
+                    <img src=''><img>
+                 </div>
+                 <x-primary-button class='mt-2 min-w-[200px] justify-center'>Create Post</x-primary-button>
                 </form>
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
+
