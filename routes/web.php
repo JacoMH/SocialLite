@@ -44,11 +44,8 @@ Route::post('like/{postID}/upload',[LikeDislikeController::class, 'upload'])->na
 
 Route::get('/User/{id}', UserController::class, 'index')->name('User.index');
 
-Route::get('/search', function () {
-    return view('search');
-})->middleware(['auth', 'verified'])->name('search');
+Route::get('/Users/All', SearchController::class, 'displayAll')->middleware(['auth', 'verified'])->name('search.displayAll');
 
-Route::get('/search/{Query}', SearchController::class)->middleware(['auth', 'verified'])->name('search.query');
-
+Route::get('/Users/search', SearchController::class, '__invoke')->middleware(['auth', 'verified'])->name('search.query');
 
 require __DIR__.'/auth.php';
