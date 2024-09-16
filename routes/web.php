@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LikeDislikeController;
@@ -42,6 +43,12 @@ Route::resource('like', LikeController::class)->middleware(['auth', 'verified'])
 Route::post('like/{postID}/upload',[LikeDislikeController::class, 'upload'])->name('like.upload');
 
 Route::get('/User/{id}', UserController::class, 'index')->name('User.index');
+
+Route::get('/search', function () {
+    return view('search');
+})->middleware(['auth', 'verified'])->name('search');
+
+Route::get('/search/{Query}', SearchController::class)->middleware(['auth', 'verified'])->name('search.query');
 
 
 require __DIR__.'/auth.php';
